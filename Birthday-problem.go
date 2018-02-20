@@ -4,65 +4,47 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"os"
 	"time"
 )
 
-// duplicate list
-func dup_count(list []int) {
+//Generates a random number and take n as input. n is the number being randomized
+//Appends the numbers to a list and a map
+//Checking the map each loop; when it finds an entry in the map, then it knows
+//that it is a duplicate
+func experiment(n int) int {
 	duplicate_frequency := make(map[int]int)
-	for _, item := range list {
-		// check if the item/element exist in the duplicate_frequency map
-		_, exist := duplicate_frequency[item]
-		if exist {
-			fmt.Println("Duplicated value: ", item)
-			count := len(duplicate_frequency)
-			hypothesis(float64(count))
-			os.Exit(1)
-			duplicate_frequency[item] += 1 // increase counter by 1 if already in the map
-
-		} else {
-			duplicate_frequency[item] = 1 // else start counting from 1
-		}
-	}
-
-}
-
-func hypothesis(length float64) bool {
-	result := (math.Pi * 50) / 2
-	hypoConf := math.Sqrt(result)
-
-	newLength := math.Floor(length)
-	newHypo := math.Floor(hypoConf)
-
-	if newLength == newHypo {
-		fmt.Printf("Hypothesis confirmed: %d = %d", newLength, newHypo)
-		return true
-	}
-	fmt.Printf("Hypothesis denied: %d = %d", newLength, newHypo)
-	return false
-}
-
-func Generate_Sequence(n int) {
-	var listOfNumbers []int
-	var index = 0
-
 	rand.Seed(time.Now().UTC().UnixNano())
+	var list []int
 	for {
 		value := rand.Intn(n - 1)
-		fmt.Println(value)
+		_, exist := duplicate_frequency[value]
+		list = append(list, value)
+		// check if the item/element exist in the duplicate_frequency map
+		if exist {
+			fmt.Println("Duplicated value: ", value)
+			hypothesis(list)
+			break
+		} else {
 
-		//fmt.Println(index)
-		listOfNumbers = append(listOfNumbers, value)
-		index++
-		dup_count(listOfNumbers)
+			duplicate_frequency[value] = 1 // else start counting from 1
+		}
 
 	}
-
+	return len(duplicate_frequency)
 }
 
+//The hypothesis checks, if the accuracy of the total numbers generated before
+//a duplicate appears is close to the formular math.Sqrt(math.Pi * 50) / 2
+func hypothesis(numberGenerated []int) {
+	result := (math.Pi * 50) / 2
+	hypoConf := math.Ceil(math.Sqrt(result))
+	accuracy := float64(len(numberGenerated)) / hypoConf
+	fmt.Printf("%12s : %5d | %17s : %5d | %8s : %5.1f\n",
+		"N", 100, "Numbers Generated Before Repeat", len(numberGenerated),
+		"Accuracy", accuracy)
+}
+
+//You can change the value of the experiment, if you want to try different numbers
 func main() {
-
-	Generate_Sequence(50)
-
+	experiment(100)
 }

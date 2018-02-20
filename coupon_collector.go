@@ -29,5 +29,5 @@ func collect_coupons(n int) {
 }
 
 func main() {
-	collect_coupons(1000)
+	collect_coupons(4)
 }
