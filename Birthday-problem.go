@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const INPUT int = 200
+
 //Generates a random number and take n as input. n is the number being randomized
 //Appends the numbers to a list and a map
 //Checking the map each loop; when it finds an entry in the map, then it knows
@@ -36,15 +38,15 @@ func experiment(n int) int {
 //The hypothesis checks, if the accuracy of the total numbers generated before
 //a duplicate appears is close to the formular math.Sqrt(math.Pi * 50) / 2
 func hypothesis(numberGenerated []int) {
-	result := (math.Pi * 50) / 2
+	result := (math.Pi * float64(INPUT)) / 2
 	hypoConf := math.Ceil(math.Sqrt(result))
 	accuracy := float64(len(numberGenerated)) / hypoConf
 	fmt.Printf("%12s : %5d | %17s : %5d | %8s : %5.1f\n",
-		"N", 100, "Numbers Generated Before Repeat", len(numberGenerated),
+		"N", float64(INPUT), "Numbers Generated Before Repeat", len(numberGenerated),
 		"Accuracy", accuracy)
 }
 
 //You can change the value of the experiment, if you want to try different numbers
 func main() {
-	experiment(100)
+	experiment(INPUT)
 }
