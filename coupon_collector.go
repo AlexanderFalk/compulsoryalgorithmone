@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var harmonicValues []float64
+
 func collect_coupons(n int) {
 	var isCollected = make([]bool, n)
 	var count int = 0
@@ -26,6 +28,26 @@ func collect_coupons(n int) {
 	}
 
 	fmt.Println("Total collected coupons: ", count)
+}
+
+func getHarmonicValues(number int) float64 {
+	if harmonicValues[number] != 0 {
+		return harmonicValues[number]
+	}
+
+	index := number - 1
+	//Find last computed value
+	for harmonicValues[index] == 0 {
+		index--
+	}
+
+	for index <= number {
+		harmonicValues[index] = float64(1)/float64(index) + harmonicValues[index-1]
+		index++
+	}
+
+	return harmonicValues[number]
+
 }
 
 func main() {
